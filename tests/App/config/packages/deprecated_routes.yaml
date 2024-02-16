@@ -1,0 +1,2 @@
+deprecated-routes:
+  isDisabled: '%env(resolve:bool:DISABLE_DEPRECATION_ROUTES)%'

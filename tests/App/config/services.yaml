@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Macpaw\SymfonyDeprecatedRoutes\Tests\App\:
+    resource: '../*'
+    exclude: '../{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+  Macpaw\SymfonyDeprecatedRoutes\Tests\App\Controller\HomeController:
+    tags: [ 'controller.service_arguments' ]

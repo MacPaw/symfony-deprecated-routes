@@ -1,0 +1,21 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Macpaw\SymfonyDeprecatedRoutes\Routing\:
+    resource: '../../src/Routing/*'
+    exclude:
+      - ../../src/Routing/EventSubscriber
+
+  Macpaw\SymfonyDeprecatedRoutes\Routing\EventSubscriber\DeprecationRoutesEventSubscriber:
+    tags: ['kernel.event_subscriber']
+    arguments:
+      $deprecationFromHeaderName: 'X-DEPRECATED-FROM'
+      $deprecationSinceHeaderName: 'X-DEPRECATED-SINCE'
+      $deprecationHeaderName: 'X-DEPRECATED'
+
+  Macpaw\SymfonyDeprecatedRoutes\Routing\Loader\RoutesLoaderDecorator:
+      class: Macpaw\SymfonyDeprecatedRoutes\Routing\Loader\RoutesLoaderDecorator
+      decorates: routing.loader
+      arguments: [ '@Macpaw\SymfonyDeprecatedRoutes\Routing\Loader\RoutesLoaderDecorator.inner' ]
