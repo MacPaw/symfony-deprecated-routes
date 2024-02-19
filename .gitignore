@@ -1,0 +1,11 @@
+/.idea
+/*.DStore*
+/docker-compose.override.yml
+/*.iml
+/composer.lock
+/vendor/
+/phpunit.xml
+/phpcs.xml
+/var
+/coverage
+/.*cache*
