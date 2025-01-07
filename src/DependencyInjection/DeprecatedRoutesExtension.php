@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Macpaw\SymfonyDeprecatedRoutes\DependencyInjection;
 
 use Exception;
-use Macpaw\SymfonyDeprecatedRoutes\DeprecatedRoutesBundle;
 use Macpaw\SymfonyDeprecatedRoutes\Routing\AnnotationReader\MarkDeprecatedRoutes;
 use Macpaw\SymfonyDeprecatedRoutes\Routing\EventSubscriber\DeprecationRoutesEventSubscriber;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
@@ -28,14 +26,16 @@ final class DeprecatedRoutesExtension extends Extension
         $loader->load('services.yaml');
 
         $configuration = $this->getConfiguration($configs, $container);
-        assert($configuration instanceof ConfigurationInterface);
         $configs = $this->processConfiguration($configuration, $configs);
         $definition = $container->getDefinition(DeprecationRoutesEventSubscriber::class);
 
-        $headers = $configs[Configuration::HEADER_OPTION_NAME];
+        $headers = $configs[Configuration::HEADER_OPTION_NAME] ?? [];
         $definition->setArguments([
+            /** @phpstan-ignore-next-line */
             '$deprecationHeaderName' => $headers[Configuration::DEPRECATION_MESSAGE_OPTION_NAME],
+            /** @phpstan-ignore-next-line */
             '$deprecationFromHeaderName' => $headers[Configuration::DEPRECATION_FROM_OPTION_NAME],
+            /** @phpstan-ignore-next-line */
             '$deprecationSinceHeaderName' => $headers[Configuration::DEPRECATION_SINCE_OPTION_NAME],
             '$isDisabled' => $configs[Configuration::IS_DISABLED_OPTION_NAME],
         ]);
@@ -49,9 +49,9 @@ final class DeprecatedRoutesExtension extends Extension
     }
 
     /**
-     * @param array<string, mixed> $config
+     * @param array<mixed> $config
      */
-    public function getConfiguration(array $config, ContainerBuilder $container)
+    public function getConfiguration(array $config, ContainerBuilder $container): ConfigurationInterface
     {
         return new Configuration();
     }
