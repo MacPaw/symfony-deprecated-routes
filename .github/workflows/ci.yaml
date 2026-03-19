@@ -18,6 +18,10 @@ jobs:
           - '6.4.*'
           - '7.0.*'
         include:
+          - description: 'Symfony 8'
+            php: '8.4'
+            symfony-versions: '8.0.*'
+            coverage: 'none'
           - description: 'Log Code Coverage'
             php: '8.3'
             symfony-versions: '^7.0'
@@ -26,9 +30,9 @@ jobs:
     name: PHP ${{ matrix.php }} Symfony ${{ matrix.symfony-versions }} ${{ matrix.description }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: ~/.composer/cache/files
           key: ${{ matrix.php }}-${{ matrix.symfony-versions }}
@@ -44,10 +48,10 @@ jobs:
 
       - name: Set composer cache directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache composer
-        uses: actions/cache@v2.1.2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-${{ matrix.php }}-${{ matrix.symfony-versions }}-composer-${{ hashFiles('composer.json') }}
@@ -60,6 +64,8 @@ jobs:
           composer require symfony/dependency-injection:${{ matrix.symfony-versions }} --no-update --no-scripts
           composer require symfony/http-kernel:${{ matrix.symfony-versions }} --no-update --no-scripts
           composer require symfony/routing:${{ matrix.symfony-versions }} --no-update --no-scripts
+          composer require symfony/event-dispatcher:${{ matrix.symfony-versions }} --no-update --no-scripts
+          composer require --dev symfony/framework-bundle:${{ matrix.symfony-versions }} --no-update --no-scripts
           composer require --dev symfony/yaml:${{ matrix.symfony-versions }} --no-update --no-scripts
           composer require --dev symfony/browser-kit:${{ matrix.symfony-versions }} --no-update --no-scripts
       - name: Install dependencies

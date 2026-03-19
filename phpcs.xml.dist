@@ -23,7 +23,19 @@
 
     <rule ref="Generic.PHP.ForbiddenFunctions">
         <properties>
-            <property name="forbiddenFunctions" type="array" value="eval=>NULL,dd=>NULL,die=>NULL,var_dump=>NULL,dump=>NULL,sizeof=>count,delete=>unset,print=>echo,echo=>NULL,print_r=>NULL,create_function=>NULL"/>
+            <property name="forbiddenFunctions" type="array">
+                <element key="eval"/>
+                <element key="dd"/>
+                <element key="die"/>
+                <element key="var_dump"/>
+                <element key="dump"/>
+                <element key="sizeof" value="count"/>
+                <element key="delete" value="unset"/>
+                <element key="print" value="echo"/>
+                <element key="echo"/>
+                <element key="print_r"/>
+                <element key="create_function"/>
+            </property>
         </properties>
     </rule>
     <rule ref="Squiz.WhiteSpace.FunctionSpacing">
