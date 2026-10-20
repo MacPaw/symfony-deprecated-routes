@@ -1,5 +1,7 @@
 # Symfony Deprecated Routes Bundle
 
+![Symfony Deprecated Routes](.github/header.png)
+
 Symfony Deprecated Routes Bundle offers to mark some api routes as deprecated.
 
 ## Installation
